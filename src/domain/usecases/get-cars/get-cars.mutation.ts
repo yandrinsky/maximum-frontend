@@ -1,12 +1,13 @@
 import { useInvalidateMutation } from '../../query/use-invalidate-mutation';
 import { QUERY_KEYS } from '../../query/query-keys';
 import { IGetCarsProps, IGetCarsResponse, IGetCarsServerResponse } from './get-cars.types';
+import { prodBaseUrl } from '../../ api/base-url';
 
 export const useGetCarsMutation = (invalidateKeys: QUERY_KEYS[]) =>
     useInvalidateMutation({ mutationFn: getCars, invalidateKeys });
 
 const getCars = async (props: IGetCarsProps): Promise<IGetCarsResponse> => {
-    const response = await fetch('http://127.0.0.1:3001/get-car', {
+    const response = await fetch(prodBaseUrl + '/get-car', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'

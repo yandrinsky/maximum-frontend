@@ -1,12 +1,13 @@
 import { useInvalidateMutation } from '../../query/use-invalidate-mutation';
 import { QUERY_KEYS } from '../../query/query-keys';
 import { IGetModelsProps, IGetModelsResponse, IGetModelsServerResponse } from './get-models.types';
+import { prodBaseUrl } from '../../ api/base-url';
 
 export const useGetModelsMutation = (invalidateKeys: QUERY_KEYS[]) =>
     useInvalidateMutation({ mutationFn: getModels, invalidateKeys });
 
 const getModels = async (props: IGetModelsProps): Promise<IGetModelsResponse> => {
-    const response = await fetch('http://127.0.0.1:3001/models-aggregate', {
+    const response = await fetch(prodBaseUrl + '/models-aggregate', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'

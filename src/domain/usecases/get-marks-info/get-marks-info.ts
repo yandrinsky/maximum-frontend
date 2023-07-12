@@ -1,10 +1,11 @@
 import { IGetMarksInfoResponse, IGetMarksInfoServerResponse } from './get-marks-info.types';
 import { useQuery } from 'react-query';
+import { prodBaseUrl } from '../../ api/base-url';
 
 export const useGetMarksInfoQuery = () => useQuery(['/marks-aggregate'], getMarksInfo);
 
 const getMarksInfo = async (): Promise<IGetMarksInfoResponse> => {
-    const response = await fetch('http://127.0.0.1:3001/marks-aggregate', {
+    const response = await fetch(prodBaseUrl + '/marks-aggregate', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
