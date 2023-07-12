@@ -1,46 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Table, Pagination, Select, Row, Col, Typography } from 'antd';
 import { convertMarksInfoResponse, convertModelResponse, mainCarTableColumns } from './main.utils';
 import { MarksPicker } from './marks-picker/marks-picker.component';
-import { useGetModelsMutation } from '../../domain/usecases/get-models/get-models.mutation';
-import { useGetMarksInfoQuery } from '../../domain/usecases/get-marks-info/get-marks-info';
-import { useGetCarsMutation } from '../../domain/usecases/get-cars/get-cars.mutation';
-import { useGetPagesInfoMutation } from '../../domain/usecases/get-pages-info/get-pages-info.mutation';
+import { useMain } from './main.hook';
 
 const { Text } = Typography;
 
 export const Main: React.FC = () => {
-    const [models, setModels] = useState<string[]>([]);
-    const [marks, setMarks] = useState<string[]>([]);
-    const [page, setPage] = useState(1);
-
-    const { mutate: mutateGetModels, data: modelsData } = useGetModelsMutation([]);
-    const { mutate: mutateGetCars, data: carsData } = useGetCarsMutation([]);
-    const { mutate: mutateGetPagesInfo, data: pagesInfoData } = useGetPagesInfoMutation([]);
-    const { data: allMarksInfo } = useGetMarksInfoQuery();
-
-    useEffect(() => {
-        mutateGetModels({ mark: marks });
-
-        if (!marks.length) {
-            setModels([]);
-        }
-    }, [marks.length]);
-
-    useEffect(() => {
-        mutateGetCars({ mark: marks, model: models, page });
-        mutateGetPagesInfo({ mark: marks, model: models });
-    }, [marks.length, models.length, page]);
-
-    useEffect(() => {
-        setPage(1);
-    }, [marks.length, models.length]);
-
-    useEffect(() => {
-        if (modelsData) {
-            setModels(prevModels => prevModels.filter(model => modelsData.includes(model)));
-        }
-    }, [modelsData?.length]);
+    const {
+        setPage,
+        page,
+        models,
+        modelsData,
+        carsData,
+        pagesInfoData,
+        marks,
+        allMarksInfo,
+        setMarks,
+        setModels
+    } = useMain();
 
     return (
         <Row style={{ justifyContent: 'center', display: 'flex', padding: 30 }}>
